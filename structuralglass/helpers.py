@@ -110,10 +110,7 @@ class Roarks4side:
         """
 
         value = (
-            -self._alpha(self._ratio)
-            * q
-            * self._b ** 4
-            / (self.E * self.t ** 3)
+            -self._alpha(self._ratio) * q * self._b**4 / (self.E * self.t**3)
         )
         return value.to_reduced_units()
 

@@ -58,7 +58,7 @@ class TestGlassPly(unittest.TestCase):
         )
 
     def test_invalid_unit_from_nominal_thickness(self):
-        tnom = 8 * ureg.mm ** 2
+        tnom = 8 * ureg.mm**2
         with self.assertRaises(pint.DimensionalityError) as cm:
             lay.GlassPly.from_nominal_thickness(tnom)
         self.assertEqual(
@@ -161,10 +161,13 @@ class TestInterlayerProductTable(unittest.TestCase):
         self.interlayer.temperature = Q_(35, "degC")
         self.interlayer.duration = Q_(20, "year")
         with self.assertRaises(ValueError) as cm:
-            G = self.interlayer.G
+            self.interlayer.G
         self.assertEqual(
-            str(cm.exception), ("Extrapolating G: The temperature-duration "
-            "combination is outside of the data tables bounds.")
+            str(cm.exception),
+            (
+                "Extrapolating G: The temperature-duration "
+                "combination is outside of the data tables bounds."
+            ),
         )
 
     def test_not_setting_ref_temp(self):

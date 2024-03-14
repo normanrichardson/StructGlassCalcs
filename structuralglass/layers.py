@@ -407,7 +407,9 @@ class Interlayer:
             G_table_z = vlookup(x, y).T
             # create the interploation function
             G_interp = interpolate.RegularGridInterpolator(
-                (np.array(G_table_x), np.array(G_table_y)), G_table_z, method="linear"
+                (np.array(G_table_x), np.array(G_table_y)),
+                G_table_z,
+                method="linear",
             )
             # use a decorator to add dimensions to the interpolation function
 
@@ -416,10 +418,14 @@ class Interlayer:
                 try:
                     result = G_interp([x, y])
                 except ValueError as err:
-                    raise ValueError(("Extrapolating G: The "
-                    "temperature-duration combination is outside of the data "
-                    "tables bounds.")) from err
+                    raise ValueError(
+                        (
+                            "Extrapolating G: The temperature-duration "
+                            "combination is outside of the data tables bounds."
+                        )
+                    ) from err
                 return result
+
             self.G_interp_dim = call_G_interp
 
     @classmethod

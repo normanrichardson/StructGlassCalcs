@@ -287,7 +287,7 @@ class NonCompositeMethod(GlassLiteEquiv):
         """
 
         def func(n):
-            return sum(ii.t_min ** n for ii in self.ply) ** (1 / n)
+            return sum(ii.t_min**n for ii in self.ply) ** (1 / n)
 
         self._h_efs = dict(
             zip(self.ply, itertools.repeat(func(2), len(self.ply)))
@@ -414,24 +414,22 @@ class ShearTransferCoefMethod(GlassLiteEquiv):
         h_s = 0.5 * (h_1 + h_2) + h_v
         h_s1 = h_s * h_1 / (h_1 + h_2)
         h_s2 = h_s * h_2 / (h_1 + h_2)
-        I_s = h_1 * h_s2 ** 2 + h_2 * h_s1 ** 2
+        I_s = h_1 * h_s2**2 + h_2 * h_s1**2
         self.Gamma = 1.0 / (
             1.0
             + self.beta
             * E_glass
             * I_s
             * h_v
-            / (G_interlayer * h_s ** 2 * self.panel_min_dim ** 2)
+            / (G_interlayer * h_s**2 * self.panel_min_dim**2)
         )
-        self._h_efw = (h_1 ** 3 + h_2 ** 3 + 12 * self.Gamma * I_s) ** (
-            1 / 3.0
-        )
+        self._h_efw = (h_1**3 + h_2**3 + 12 * self.Gamma * I_s) ** (1 / 3.0)
         self._h_efs = {}
         self._h_efs[self.ply[0]] = (
-            self.h_efw ** 3 / (h_1 + 2 * self.Gamma * h_s2)
+            self.h_efw**3 / (h_1 + 2 * self.Gamma * h_s2)
         ) ** (0.5)
         self._h_efs[self.ply[2]] = (
-            self.h_efw ** 3 / (h_2 + 2 * self.Gamma * h_s1)
+            self.h_efw**3 / (h_2 + 2 * self.Gamma * h_s1)
         ) ** (0.5)
 
     def _determine_package_E(self):
