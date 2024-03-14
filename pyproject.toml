@@ -5,6 +5,50 @@ requires = [
 ]
 build-backend = "setuptools.build_meta"
 
+[project]
+name = "structuralglass"
+version = "0.0.3"
+authors = [
+	{name = "Norman JN Richardson", email="normanrichardson@gmail.com"}
+]
+description = "A python package for structural glass analysis."
+requires-python = ">= 3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+	"pint",
+	"scipy",
+	"numpy"
+]
+readme = "README.md"
+
+[project.optional-dependencies]
+dev = [
+	"pint==0.20",
+	"scipy==1.12.0",
+	"numpy==1.26.4",
+	"Sphinx",
+	"sphinx-rtd-theme",
+	"black",
+	"isort",
+	"flake8"
+]
+dist = [
+	"twine",
+	"build"
+]
+
+[project.urls]
+Repository = "https://github.com/normanrichardson/structuralglass"
+Documentation = "https://structuralglass.readthedocs.io/en/latest/index.html"
+"Bug Tracker" = "https://github.com/normanrichardson/structuralglass/issues"
+
+[tools.setuptools.packages.find]
+where=["structuralglass"]
+
 [tool.isort]
 profile = "black"
 src_paths = ["structuralglass"]
