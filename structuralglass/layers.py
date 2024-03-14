@@ -76,8 +76,9 @@ temperature and load duration. For gaps in the manufactures data (for example,
 the shear modulus is given for 10°C and 20°C and 15°C is set), the tabular
 data is interpolated linearly. Extrapolation is not done and capped to
 tabulated values. This functionality is provided by scipy's
-:class:`~scipy.interpolate.interp2d` function. A dynamic :class:`~Interlayer`
-can be created via the :meth:`~Interlayer.from_product_table` class method.
+:class:`~scipy.interpolate.RegularGridInterpolator` function. A dynamic
+:class:`~Interlayer` can be created via the
+:meth:`~Interlayer.from_product_table` class method.
 
 ::
 
@@ -403,17 +404,22 @@ class Interlayer:
                 )
             )
             # Exicute the vectorized lookup
-            G_table_z = vlookup(x, y)
+            G_table_z = vlookup(x, y).T
             # create the interploation function
-            G_interp = interpolate.interp2d(
-                G_table_x, G_table_y, G_table_z, kind="linear"
+            G_interp = interpolate.RegularGridInterpolator(
+                (np.array(G_table_x), np.array(G_table_y)), G_table_z, method="linear"
             )
             # use a decorator to add dimensions to the interpolation function
 
             @ureg.wraps(ureg.MPa, (ureg.degC, ureg.second))
             def call_G_interp(x, y):
-                return G_interp([x, y])
-
+                try:
+                    result = G_interp([x, y])
+                except ValueError as err:
+                    raise ValueError(("Extrapolating G: The "
+                    "temperature-duration combination is outside of the data "
+                    "tables bounds.")) from err
+                return result
             self.G_interp_dim = call_G_interp
 
     @classmethod
@@ -546,7 +552,7 @@ class Interlayer:
             except KeyError:
                 if self.temperature is None or self.duration is None:
                     raise ValueError(
-                        "Reference temperature and/or duration " "not test."
+                        "Reference temperature and/or duration not set."
                     )
                 return self.G_interp_dim(self.temperature, self.duration)[0]
 

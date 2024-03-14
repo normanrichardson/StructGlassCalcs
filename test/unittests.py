@@ -157,6 +157,16 @@ class TestInterlayerProductTable(unittest.TestCase):
         self.assertEqual(self.interlayer.t, self.t_pvb)
         self.assertEqual(self.interlayer.G, Q_(26.5, "MPa"))
 
+    def test_interpolation_out_of_bounds(self):
+        self.interlayer.temperature = Q_(35, "degC")
+        self.interlayer.duration = Q_(20, "year")
+        with self.assertRaises(ValueError) as cm:
+            G = self.interlayer.G
+        self.assertEqual(
+            str(cm.exception), ("Extrapolating G: The temperature-duration "
+            "combination is outside of the data tables bounds.")
+        )
+
     def test_not_setting_ref_temp(self):
         self.interlayer.duration = Q_(1, "month")
         self.assertEqual(self.interlayer.t, self.t_pvb)
@@ -164,7 +174,7 @@ class TestInterlayerProductTable(unittest.TestCase):
             self.interlayer.G
         self.assertEqual(
             str(cm.exception),
-            "Reference temperature and/or duration not test.",
+            "Reference temperature and/or duration not set.",
         )
 
     def test_not_setting_ref_duration(self):
@@ -174,7 +184,7 @@ class TestInterlayerProductTable(unittest.TestCase):
             self.interlayer.G
         self.assertEqual(
             str(cm.exception),
-            "Reference temperature and/or duration not test.",
+            "Reference temperature and/or duration not set.",
         )
 
 
