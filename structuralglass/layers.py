@@ -412,7 +412,7 @@ class Interlayer:
 
             @ureg.wraps(ureg.MPa, (ureg.degC, ureg.second))
             def call_G_interp(x, y):
-                G_interp(x, y)
+                return G_interp([x, y])
 
             self.G_interp_dim = call_G_interp
 

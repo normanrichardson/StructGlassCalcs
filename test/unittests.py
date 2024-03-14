@@ -151,6 +151,12 @@ class TestInterlayerProductTable(unittest.TestCase):
         self.assertEqual(self.interlayer.t, self.t_pvb)
         self.assertEqual(self.interlayer.G, Q_(3.29, "MPa"))
 
+    def test_interpolation_data(self):
+        self.interlayer.temperature = Q_(35, "degC")
+        self.interlayer.duration = Q_(1, "day")
+        self.assertEqual(self.interlayer.t, self.t_pvb)
+        self.assertEqual(self.interlayer.G, Q_(26.5, "MPa"))
+
     def test_not_setting_ref_temp(self):
         self.interlayer.duration = Q_(1, "month")
         self.assertEqual(self.interlayer.t, self.t_pvb)
